@@ -1,7 +1,4 @@
 # WikiDictionaryResearch
-
-**Video Demo**: [Watch on YouTube](https://youtu.be/0CWOLI26ayE)
-
 ## Overview
 
 This project was created as part of the final assignment for the CS50x course on Edx.org. The inspiration behind this project came from the following statement:
