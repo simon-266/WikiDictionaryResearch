@@ -85,3 +85,7 @@ This CSV file is primarily for personal reference. It contains the word frequenc
 ## `word_frequency.db`
 
 This SQLite database file is used by the Jupyter notebook (`WikiDictionaryResearch.ipynb`) to fetch word frequency data and generate visualizations such as pie charts.
+
+## Acknowledgments
+
+The comments and documentation in this project were assisted by **ChatGPT** and **Gemini**, to enhance clarity and readability.
