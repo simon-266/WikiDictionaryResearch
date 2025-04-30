@@ -1,146 +1,87 @@
-Thank you for reviewing my project. This project was made as a final project for CS50x on Edx.org
-
 # WikiDictionaryResearch
-#### Video Demo:  https://youtu.be/0CWOLI26ayE
-#### Description:
 
-## I came to this project by coming across the following statement:
-## "It’s been said that the top 1,000 most frequent words in a language make up over 80% of the speech."
+**Video Demo**: [Watch on YouTube](https://youtu.be/0CWOLI26ayE)
 
-## This project contains following files
-- extraction.py
-- WikiDictionaryResearch.ipynb
-- list_of_articles.txt
-- word_frequency.csv
-- word_frequency.db
+## Overview
 
-## extraction.py
+This project was created as part of the final assignment for the CS50x course on Edx.org. The inspiration behind this project came from the following statement:
 
-### This is the main part of this project this python script is used to create allmost all other files.
-### It extracts 15,000 Wikipedia articles and calculates the frequency of all english words inside its pages
+> "It’s been said that the top 1,000 most frequent words in a language make up over 80% of speech."
 
-### For this file the following python libraries are used:
-- wikipedia
-  used to extract the contents of all 15.000 Wikipedia pages
-  
-- pandas
-  to evalute the words and save them to the csv and database file
+This project extracts 15,000 Wikipedia articles, analyzes the frequency of English words across them, and stores the results in CSV and SQLite database formats for further analysis.
 
-- sqlite3
-  to store the list into a db file
-  
-- re
-  to remove punctuation of the wikipedia articles
-  
-- collections
-  to count the frequency of the words efficiently
-  
-- concurrent
-  to make the extraction faster with multithreading
-  
-- enchant
-  to check if a word is a actual english words
+## Project Files
 
-- warings
-  removes the warning messages which filled up the entire terminal window
+- **extraction.py**: Main script for extracting Wikipedia articles and calculating word frequencies.
+- **WikiDictionaryResearch.ipynb**: Jupyter notebook used to visualize the extracted data and generate pie charts.
+- **list_of_articles.txt**: A log of all the Wikipedia articles processed.
+- **word_frequency.csv**: A CSV file containing the word frequencies and their percentages.
+- **word_frequency.db**: A SQLite database storing the word frequencies.
 
-### This file contains three following functions
+## `extraction.py`
 
-- process_articles_in_batches
-    Uses the concurrent librarie to execute the 'fetch_and_process_article'
-    function in multiple threads and in multiple batches to avoid not having enough ram
-    and making the programm faster in generall by using multiple threads instead of evaluating
-    the article one and another.
-    At last it gives back an dictionary which will be used to transform it into a pandas dataframe
+This Python script is the core of the project. It extracts content from 15,000 Wikipedia articles, processes the text, and calculates the frequency of English words.
 
-    Args:
-      batch_size:
-        how big should the batches be to evalute
-      total_runs:
-        how many wikipedia articles should be proccesed
+### Libraries Used:
 
-- fetch_and_process_article
-    executed by 'process_articles_in_batches'
-    it gets a random english wikipedia articles save the headline to the list_of_articles.txt file
-    then fetches it content and at last removes punctuation and counts the words before giving them back in a dictionary
+- **wikipedia**: Fetches content from Wikipedia articles.
+- **pandas**: Processes the word data and saves it in both CSV and database formats.
+- **sqlite3**: Stores the word frequency data in an SQLite database.
+- **re**: Removes punctuation from the article content.
+- **collections**: Efficiently counts word frequencies.
+- **concurrent**: Speeds up the extraction process by using multithreading.
+- **enchant**: Checks if a word is valid in the English language.
+- **warnings**: Suppresses warning messages in the terminal.
 
-- is_english_word
-    takes a word as input and returns true if it is a word in the english dictionary else it returns false
+### Functions in `extraction.py`:
 
-### These are the following variables in the main function in this file:
+1. **process_articles_in_batches**: 
+   - Uses multithreading to process articles in batches. This helps avoid running out of memory and speeds up the process.
+   - **Arguments**:
+     - `batch_size`: Defines the size of each batch of articles.
+     - `total_runs`: Defines the total number of Wikipedia articles to process.
+   
+2. **fetch_and_process_article**:
+   - Fetches a random English Wikipedia article, extracts its content, removes punctuation, and counts the word frequencies.
+   - Saves the article's title in `list_of_articles.txt`.
+   
+3. **is_english_word**:
+   - Checks if a word is valid in the English language using the `enchant` library.
 
-- list_of_articles
-  a filestream to the list_of_articles.txt file
-  
-- total_runs
-  used by the proces_article_in_batches function as input for the amount of articles extracted
-  increasing this would mean there getting more articles extracted
-  
-- batch_size
-  used by the proces_article_in_batches function as input for the size of the batches
-  increasing this would change how many articles getting processed during a single batch
-  and would also increase the amount of ram is needed
-  
-  
-- final_counts
-  is a dictionary of words returned by the process_article_in_batches function
-  which gets converted into a pandas dataframe and saved into the final_result variable
-  
-- final_result
-  is a pandas dataframe which gets changes sometimes but it always contains the current result and is
-  saved into a csv and database file at the end
+### Key Variables:
 
-  ####columns: 'word', 'frequency', 'frequency_in_percent'
+- **list_of_articles**: A file stream to the `list_of_articles.txt` file, which logs the titles of the processed articles.
+- **total_runs**: Defines how many articles should be processed.
+- **batch_size**: Defines how many articles to process in each batch.
+- **final_counts**: A dictionary holding the word frequencies, which is later converted into a Pandas DataFrame.
+- **final_result**: A Pandas DataFrame that holds the final word frequencies, saved to both a CSV and a SQLite database file.
+  - **Columns**:
+    - `word`: The English word.
+    - `frequency`: The number of times the word appears in the articles.
+    - `frequency_in_percent`: The percentage of total word occurrences attributed to this word.
+- **total_words**: The total number of words across all articles, used to calculate `frequency_in_percent`.
+- **conn**: SQLite connection object for interacting with the `word_frequency.db` database.
+- **start**: Timestamp marking when the extraction process begins.
+- **end**: Timestamp marking when the extraction process finishes.
 
-  - word
-    the english word
-  - frequency
-    how many times the words has occured in the fetched wikipedia articles
-  - frequency_in_percent
-    how much percentage does the word cover in the fetched wikipedia articels
-  
-- total_words
-  the sum of all english words of the entire fetched wikipedia articles
-  this variable gets used to calculate the frequency_in_percent column in final_result
-  and also is used to create the _total row for the csv file
-  
-- conn
-  database connection to the sqlite3 word_frequency.db file
-  
-- start
-  the milliseconds the extraction process has started
-  
-- end
-  the milliseconds the extraction process has finished
+## `WikiDictionaryResearch.ipynb`
 
-## WikiDictionaryResearch.ipynb
+This Jupyter notebook visualizes the results from `extraction.py`. It answers questions about word frequency and generates pie charts to display the distribution of the most common words.
 
-### This ipython notebook should show off the results of extraction.py by answering the question
+### Libraries Used:
 
-### For this file the following python libraries are used:
+- **matplotlib**: Creates visualizations such as pie charts.
+- **sqlite3**: Loads the data from the SQLite database (`word_frequency.db`) into a Pandas DataFrame.
+- **pandas**: Processes the data from the database and uses it for generating visualizations.
 
-- matplotlib
-  used to create the piechart out of a pandas dataframe
-  
-- sqlite3
-  used to load the list from word_frequency.db
-  and saves it into a pandas dataframe
-  
-- pandas
-  to convert the sqlite3 database data into a dataframe and to use it with the piechart
+## `list_of_articles.txt`
 
-## list_of_articles.txt
+This file is generated by `extraction.py`. It logs the titles of all Wikipedia articles that have been processed during the web scraping phase. These are random articles that I did not own or edit.
 
-### This files is generated by the extraction.py and the only mission of it
-### is to keep track which Article got used during the webscraping part.
-#### These are all random articles i do not own or edited any of these.
+## `word_frequency.csv`
 
-## word_frequency.csv
+This CSV file is primarily for personal reference. It contains the word frequencies and is used for checking the accuracy of the extraction process and for quick lookups.
 
-### This file is for myself to see if the extractor makes it job correctly easier and also for lookup
-### any word i'm currios of how it performed
+## `word_frequency.db`
 
-## word_frequency.db
-
-### This file is used by the WikiDictionaryResearch.ipynb notebook to fetch the data and create its
-### piechats with it
+This SQLite database file is used by the Jupyter notebook (`WikiDictionaryResearch.ipynb`) to fetch word frequency data and generate visualizations such as pie charts.
